@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Forecast</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <header class="bg-primary text-white text-center">
+      <h1>Weather Dashboard</h1>
+    </header>
+    <form>
+      <div class="row">
+        <div class="col-4">
+          <label for="city-input">Search for a City:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="city-input"
+            placeholder="Sydney"
+          />
+          <button type="submit" class="btn btn-primary btn-block">
+            Submit
+          </button>
+          <hr />
+          <ul class="city-list list-group text-center"></ul>
+        </div>
+      </div>
+    </form>
+    <script type="text/javascript" src="./script.js"></script>
+  </body>
+</html>
