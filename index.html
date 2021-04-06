@@ -8,29 +8,44 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
     />
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <header class="bg-primary text-white text-center">
       <h1>Weather Dashboard</h1>
     </header>
-    <form>
+    <main class="container">
       <div class="row">
-        <div class="col-4">
-          <label for="city-input">Search for a City:</label>
-          <input
-            type="text"
-            class="form-control"
-            id="city-input"
-            placeholder="Sydney"
-          />
-          <button type="submit" class="btn btn-primary btn-block">
-            Submit
-          </button>
-          <hr />
+        <div class="col-3">
+          <form>
+            <label for="city-input">Search for a City:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="city-input"
+              placeholder="Sydney"
+            />
+            <button type="submit" class="btn btn-primary btn-block">
+              Submit
+            </button>
+            <hr />
+          </form>
           <ul class="city-list list-group text-center"></ul>
         </div>
+        <div class="jumbotron col-8 collapse">
+          <h1 class="display-4 city-name-display"></h1>
+          <p>Temp: <span class="temp"></span></p>
+          <p>Wind: <span class="wind"></span></p>
+          <p>Humidity: <span class="humidity"></span></p>
+          <p>UV Index: <span class="uv"></span></p>
+        </div>
       </div>
-    </form>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"
+    ></script>
     <script type="text/javascript" src="./script.js"></script>
   </body>
 </html>
