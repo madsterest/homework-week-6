@@ -12,10 +12,23 @@ var mainUv = document.querySelector(".uv");
 var cardEl = document.querySelectorAll(".card");
 var cardTitleEl = document.querySelectorAll(".card-title");
 var cardBodyEl = document.querySelectorAll(".card-text");
+var weatherForecastTitle = document.querySelector(".forecast-title");
+var weatherForecast = document.querySelector(".forecast");
+
+function init() {
+  var savedCityInput = JSON.parse(localStorage.getItem("city-list"));
+  console.log(savedCityInput);
+  if (savedCityInput !== null) {
+    cityInput = savedCityInput;
+    generateListDisplay();
+  }
+}
 
 cityListEl.addEventListener("click", function (event) {
   event.stopPropagation();
   dailyEl.classList.remove("collapse");
+  weatherForecast.classList.remove("collapse");
+  weatherForecastTitle.classList.remove("collapse");
   var cityName = event.target.innerHTML;
   getLocation(cityName);
 });
@@ -27,7 +40,10 @@ form.addEventListener("submit", function (event) {
     return;
   } else {
     dailyEl.classList.remove("collapse");
+    weatherForecast.classList.remove("collapse");
+    weatherForecastTitle.classList.remove("collapse");
     cityInput.push(cityName);
+    localStorage.setItem("city-list", JSON.stringify(cityInput));
     generateListDisplay();
     getLocation(cityName);
   }
@@ -111,3 +127,4 @@ var getWeather = function (lat, long, cityName) {
     }
   });
 };
+init();
