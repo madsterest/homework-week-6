@@ -5,6 +5,7 @@ var cityListEl = document.querySelector(".city-list");
 var dailyEl = document.querySelector(".jumbotron");
 var cityNameDisplay = document.querySelector(".city-name-display");
 var mainTemp = document.querySelector(".temp");
+var mainIcon = document.querySelector(".icon");
 var mainWind = document.querySelector(".wind");
 var mainHumid = document.querySelector(".humidity");
 var mainUv = document.querySelector(".uv");
@@ -16,18 +17,20 @@ cityListEl.addEventListener("click", function (event) {
   event.stopPropagation();
   dailyEl.classList.remove("collapse");
   var cityName = event.target.innerHTML;
-  cityNameDisplay.innerHTML = cityName + moment().format("(DD/MM/YYYY)");
   getLocation(cityName);
 });
 
 form.addEventListener("submit", function (event) {
   event.preventDefault();
-  dailyEl.classList.remove("collapse");
   var cityName = userInput.value.trim();
-  // cityNameDisplay.innerHTML = cityName + moment().format("(DD/MM/YYYY)");
-  cityInput.push(cityName);
-  generateListDisplay();
-  getLocation(cityName);
+  if (cityName === "") {
+    return;
+  } else {
+    dailyEl.classList.remove("collapse");
+    cityInput.push(cityName);
+    generateListDisplay();
+    getLocation(cityName);
+  }
 });
 
 function generateListDisplay() {
@@ -68,16 +71,37 @@ var getWeather = function (lat, long, cityName) {
   fetch(weatherURL).then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
-        console.log(data.current.temp);
-        cityNameDisplay.innerHTML = cityName + moment().format("(DD/MM/YYYY)");
+        var currentDate = data.current.dt;
+        cityNameDisplay.innerHTML =
+          cityName + moment(currentDate, "X").format(" (DD/MM/YYYY)");
+        mainIcon.src =
+          "http://openweathermap.org/img/wn/" +
+          data.daily[0].weather[0].icon +
+          "@2x.png";
         mainTemp.textContent = data.current.temp + "ºC";
-        mainWind.textContent = data.current.wind_speed;
-        mainHumid.textContent = data.current.humidity;
+        mainWind.textContent = data.current.wind_speed + " KPH";
+        mainHumid.textContent = data.current.humidity + " %";
         mainUv.textContent = data.current.uvi;
 
         for (var i = 0; i < cardEl.length; i++) {
+          cardBodyEl[i].innerHTML = "";
           var date = data.daily[i + 1].dt;
           cardTitleEl[i].innerHTML = moment(date, "X").format("DD/MM/YYYY");
+          var icon = document.createElement("img");
+          var temp = document.createElement("p");
+          var wind = document.createElement("p");
+          var humidity = document.createElement("p");
+          icon.src =
+            "http://openweathermap.org/img/wn/" +
+            data.daily[i + 1].weather[0].icon +
+            "@2x.png";
+          temp.innerHTML = "Temp: " + data.daily[i + 1].temp.day + "ºC";
+          wind.innerHTML = "Wind: " + data.daily[i + 1].wind_speed + " KPH";
+          humidity.innerHTML = "Humidity " + data.daily[i + 1].humidity + " %";
+          cardBodyEl[i].appendChild(icon);
+          cardBodyEl[i].appendChild(temp);
+          cardBodyEl[i].appendChild(wind);
+          cardBodyEl[i].appendChild(humidity);
         }
 
         console.log(data);
