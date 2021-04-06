@@ -8,6 +8,9 @@ var mainTemp = document.querySelector(".temp");
 var mainWind = document.querySelector(".wind");
 var mainHumid = document.querySelector(".humidity");
 var mainUv = document.querySelector(".uv");
+var cardEl = document.querySelectorAll(".card");
+var cardTitleEl = document.querySelectorAll(".card-title");
+var cardBodyEl = document.querySelectorAll(".card-text");
 
 cityListEl.addEventListener("click", function (event) {
   event.stopPropagation();
@@ -21,7 +24,7 @@ form.addEventListener("submit", function (event) {
   event.preventDefault();
   dailyEl.classList.remove("collapse");
   var cityName = userInput.value.trim();
-  cityNameDisplay.innerHTML = cityName + moment().format("(DD/MM/YYYY)");
+  // cityNameDisplay.innerHTML = cityName + moment().format("(DD/MM/YYYY)");
   cityInput.push(cityName);
   generateListDisplay();
   getLocation(cityName);
@@ -47,15 +50,14 @@ var getLocation = function (cityName) {
         console.log(data);
         var long = data[0].lon;
         var lat = data[0].lat;
-        var city = data[0].name;
-        getWeather(lat, long, city);
+        getWeather(lat, long, cityName);
       });
     } else {
       alert("Error: " + response.statusText);
     }
   });
 };
-var getWeather = function (lat, long, city) {
+var getWeather = function (lat, long, cityName) {
   var weatherURL =
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
     lat +
@@ -67,10 +69,16 @@ var getWeather = function (lat, long, city) {
     if (response.ok) {
       response.json().then(function (data) {
         console.log(data.current.temp);
-        mainTemp.textContent = data.current.temp;
+        cityNameDisplay.innerHTML = cityName + moment().format("(DD/MM/YYYY)");
+        mainTemp.textContent = data.current.temp + "ºC";
         mainWind.textContent = data.current.wind_speed;
         mainHumid.textContent = data.current.humidity;
         mainUv.textContent = data.current.uvi;
+
+        for (var i = 0; i < cardEl.length; i++) {
+          var date = data.daily[i + 1].dt;
+          cardTitleEl[i].innerHTML = moment(date, "X").format("DD/MM/YYYY");
+        }
 
         console.log(data);
       });
