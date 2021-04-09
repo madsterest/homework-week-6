@@ -98,6 +98,13 @@ var getWeather = function (lat, long, cityName) {
         mainWind.textContent = data.current.wind_speed + " KPH";
         mainHumid.textContent = data.current.humidity + " %";
         mainUv.textContent = data.current.uvi;
+        if (data.current.uvi <= 3) {
+          mainUv.setAttribute("class", "px-3 bg-success");
+        } else if (data.current.uvi <= 7 && data.current.uvi >= 4) {
+          mainUv.setAttribute("class", "px-3 bg-warning");
+        } else {
+          mainUv.setAttribute("class", "px-3 bg-danger");
+        }
 
         for (var i = 0; i < cardEl.length; i++) {
           cardBodyEl[i].innerHTML = "";
