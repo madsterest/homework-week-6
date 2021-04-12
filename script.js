@@ -61,7 +61,7 @@ function generateListDisplay() {
 //The location name is used to fetch the latitude and longitude of the location.This is then used by the get Weather function.
 var getLocation = function (cityName) {
   var requestURL =
-    "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    "https://api.openweathermap.org/geo/1.0/direct?q=" +
     cityName +
     "&limit=1&appid=9a2fde410db91e614e3f43f15460cd9b";
   fetch(requestURL).then(function (response) {
@@ -93,7 +93,7 @@ var getWeather = function (lat, long, cityName) {
         cityNameDisplay.innerHTML =
           cityName + moment(currentDate, "X").format(" (DD/MM/YYYY)");
         mainIcon.src =
-          "http://openweathermap.org/img/wn/" +
+          "https://openweathermap.org/img/wn/" +
           data.daily[0].weather[0].icon +
           "@2x.png";
         mainTemp.textContent = data.current.temp + "ºC";
@@ -117,7 +117,7 @@ var getWeather = function (lat, long, cityName) {
           var wind = document.createElement("p");
           var humidity = document.createElement("p");
           icon.src =
-            "http://openweathermap.org/img/wn/" +
+            "https://openweathermap.org/img/wn/" +
             data.daily[i + 1].weather[0].icon +
             "@2x.png";
           temp.innerHTML = "Temp: " + data.daily[i + 1].temp.day + "ºC";
