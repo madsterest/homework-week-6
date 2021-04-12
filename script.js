@@ -15,17 +15,16 @@ var cardBodyEl = document.querySelectorAll(".card-text");
 var weatherForecastTitle = document.querySelector(".forecast-title");
 var weatherForecast = document.querySelector(".forecast");
 
+//Retrieves the saved cities from local storage and saves it to the cityInput array. If there are none saved, the array is empty. It then generates the display
 function init() {
   var savedCityInput = JSON.parse(localStorage.getItem("city-list"));
-  console.log(savedCityInput);
   if (savedCityInput !== null) {
     cityInput = savedCityInput;
     generateListDisplay();
   }
 }
-
+//Added event listener for the cities list. Targets the city button that triggered the event and uses its name to find the location of the city.
 cityListEl.addEventListener("click", function (event) {
-  event.stopPropagation();
   dailyEl.classList.remove("collapse");
   weatherForecast.classList.remove("collapse");
   weatherForecastTitle.classList.remove("collapse");
@@ -33,6 +32,7 @@ cityListEl.addEventListener("click", function (event) {
   getLocation(cityName);
 });
 
+//Event listener for the form. Will be triggered by both the submit button and pressing enter. If nothing is inputed, the function will not run. Otherwise, the city name will be pushed to the cityName array and saved to local storage. It will then be rendered and the location used.
 form.addEventListener("submit", function (event) {
   event.preventDefault();
   var cityName = userInput.value.trim();
@@ -48,7 +48,7 @@ form.addEventListener("submit", function (event) {
     getLocation(cityName);
   }
 });
-
+//The list Element is set to an empty string so it renders each time the function is called. The cityInput array is looped through and a new button element created for each.
 function generateListDisplay() {
   cityListEl.innerHTML = "";
   for (var i = 0; i < cityInput.length; i++) {
@@ -58,6 +58,7 @@ function generateListDisplay() {
     cityListEl.appendChild(newEl);
   }
 }
+//The location name is used to fetch the latitude and longitude of the location.This is then used by the get Weather function.
 var getLocation = function (cityName) {
   var requestURL =
     "http://api.openweathermap.org/geo/1.0/direct?q=" +
@@ -66,7 +67,6 @@ var getLocation = function (cityName) {
   fetch(requestURL).then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
-        console.log(data);
         var long = data[0].lon;
         var lat = data[0].lat;
         getWeather(lat, long, cityName);
@@ -76,6 +76,8 @@ var getLocation = function (cityName) {
     }
   });
 };
+//The latitude and longitude is used to get the information for a specific location. The weather data is fetched and used to dispay the current weather. Depending on the value of the uvi, a different colour is set to show its severity.
+//Each card is then looped through to display the weather data for the 5-day forecast. The weather icon number is used to set the source for the image.
 var getWeather = function (lat, long, cityName) {
   var weatherURL =
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
@@ -95,7 +97,7 @@ var getWeather = function (lat, long, cityName) {
           data.daily[0].weather[0].icon +
           "@2x.png";
         mainTemp.textContent = data.current.temp + "ºC";
-        mainWind.textContent = data.current.wind_speed + " KPH";
+        mainWind.textContent = data.current.wind_speed + " km/h";
         mainHumid.textContent = data.current.humidity + " %";
         mainUv.textContent = data.current.uvi;
         if (data.current.uvi <= 3) {
@@ -119,15 +121,13 @@ var getWeather = function (lat, long, cityName) {
             data.daily[i + 1].weather[0].icon +
             "@2x.png";
           temp.innerHTML = "Temp: " + data.daily[i + 1].temp.day + "ºC";
-          wind.innerHTML = "Wind: " + data.daily[i + 1].wind_speed + " KPH";
+          wind.innerHTML = "Wind: " + data.daily[i + 1].wind_speed + " km/h";
           humidity.innerHTML = "Humidity " + data.daily[i + 1].humidity + " %";
           cardBodyEl[i].appendChild(icon);
           cardBodyEl[i].appendChild(temp);
           cardBodyEl[i].appendChild(wind);
           cardBodyEl[i].appendChild(humidity);
         }
-
-        console.log(data);
       });
     } else {
       alert("Error: " + response.statusText);
