@@ -4,4 +4,8 @@ Description: This page allows you to look up any city in the world and view its 
 
 URL: https://madsterest.github.io/weather-forecast/
 
+![Deployed Site Screenshot](./website-screenshot.png)
+
+
+
 
