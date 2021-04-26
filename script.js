@@ -20,6 +20,7 @@ function init() {
   var savedCityInput = JSON.parse(localStorage.getItem("city-list"));
   if (savedCityInput !== null) {
     cityInput = savedCityInput;
+    console.log(typeof cityInput);
     generateListDisplay();
   }
 }
