@@ -30,5 +30,6 @@ URL: https://madsterest.github.io/weather-forecast/
 ![Local Storage Display](./assets/local-storage.png)
 
 
-
+Contact me for any questions or concerns:
+Email: odea.madeleine@gmail.com
 
